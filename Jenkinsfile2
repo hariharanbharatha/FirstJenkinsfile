@@ -1,27 +1,26 @@
 pipeline {
-  agent any
+    agent any
 
-  stages {
-    stage('Greet') {
-      steps {
-        echo '👋 Hello! This is your first real Jenkins stage.'
-      }
+    parameters {
+        string(name: 'USERNAME', defaultValue: 'guest', description: 'Enter your name')
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'test', 'prod'], description: 'Choose environment')
+        booleanParam(name: 'DEPLOY', defaultValue: true, description: 'Deploy after build?')
     }
 
-    stage('List Files') {
-      steps {
-        echo '📁 Listing files in Jenkins workspace...'
-        sh 'ls -l'
-      }
+    stages {
+        stage('Greet User') {
+            steps {
+                echo "👋 Hello, ${params.USERNAME}"
+                echo "🌍 Environment selected: ${params.ENVIRONMENT}"
+            }
+        }
+        stage('Build App') {
+            when {
+                expression { return params.DEPLOY }
+            }
+            steps {
+                echo "🛠 Building and deploying to ${params.ENVIRONMENT}..."
+            }
+        }
     }
-
-    stage('System Info') {
-      steps {
-        echo '💻 Showing system information...'
-        sh 'whoami'
-        sh 'uname -a'
-        sh 'uptime'
-      }
-    }
-  }
 }
