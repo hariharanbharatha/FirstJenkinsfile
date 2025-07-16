@@ -1,0 +1,27 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Greet') {
+      steps {
+        echo '👋 Hello! This is your first real Jenkins stage.'
+      }
+    }
+
+    stage('List Files') {
+      steps {
+        echo '📁 Listing files in Jenkins workspace...'
+        sh 'ls -l'
+      }
+    }
+
+    stage('System Info') {
+      steps {
+        echo '💻 Showing system information...'
+        sh 'whoami'
+        sh 'uname -a'
+        sh 'uptime'
+      }
+    }
+  }
+}
